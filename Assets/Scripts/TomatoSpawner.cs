@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class TomatoSpawner : MonoBehaviour
 {
+    [SerializeField]
+    private Rect spawnRect = Rect.zero;
+
     [SerializeField]    
     private Vector2 spawnRange = Vector2.one;
 
@@ -18,11 +21,6 @@ public class TomatoSpawner : MonoBehaviour
     private void Start()
     {
         StartCoroutine( SpawnCoroutine() );
-    }
-
-    private void Update()
-    {
-        
     }
 
     private float GetRandomRange(Vector2 range)
@@ -42,10 +40,8 @@ public class TomatoSpawner : MonoBehaviour
     }
     private void SpawnBubble()
     {
-        var h = 3.0f;
-        var w = 2.8f;
         var newTomato = Instantiate(tomatoSample);
-        newTomato.transform.position += new Vector3(Random.Range(-w, w), Random.Range(-h, h), 0.0f);
+        newTomato.transform.position += new Vector3(Random.Range(spawnRect.xMin, spawnRect.xMax), Random.Range(spawnRect.yMin, spawnRect.yMax), 0.0f);
         newTomato.Setup(GetRandomRange(growRange), GetRandomRange(lifeRange));
     }
 }

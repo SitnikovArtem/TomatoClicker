@@ -4,6 +4,14 @@ using UnityEngine;
 [RequireComponent(typeof(ParticleSystem))]
 public class BlowEffect : MonoBehaviour
 {
+    [SerializeField][HideInInspector]
+    private ParticleSystem particle = null;
+
+    private void OnValidate()
+    {
+        particle = GetComponent<ParticleSystem>();
+    }
+
     void Start()
     {
         StartCoroutine(WaitForEndAndKill());
@@ -11,7 +19,6 @@ public class BlowEffect : MonoBehaviour
 
     private IEnumerator WaitForEndAndKill()
     {
-        var particle = GetComponent<ParticleSystem>();
         while(particle && particle.IsAlive())
             yield return null;
         Destroy(gameObject);

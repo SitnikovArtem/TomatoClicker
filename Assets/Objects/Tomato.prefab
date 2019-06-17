@@ -93,18 +93,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25892a2686d42ca49800b1677e608d3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  meshRenderer: {fileID: 1983237088120857194}
+  rigidBody: {fileID: 5372080115284533474}
+  sphereCollider: {fileID: 3868220936039207038}
   blowEffect: {fileID: 2070880060477292666, guid: 19cadec57ac47a24a94e278a22b9591a,
     type: 3}
-  poorTime: 3
+  poorTime: 1
   safeTime: 0.8
   rawCost: 1
-  doneCost: 5
+  doneCost: 3
   rawColor: {r: 0.13950694, g: 0.5188679, b: 0.13950694, a: 1}
   doneColor: {r: 0.8113208, g: 0.1555263, b: 0.095674604, a: 1}
   poorColor: {r: 0.0754717, g: 0.052096285, b: 0.040939838, a: 1}
-  meshRenderer: {fileID: 1983237088120857194}
-  rigidbody: {fileID: 5372080115284533474}
-  sphereCollider: {fileID: 3868220936039207038}
 --- !u!135 &3868220936039207038
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -132,5 +132,5 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 8
+  m_Constraints: 120
   m_CollisionDetection: 0

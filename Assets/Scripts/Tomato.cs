@@ -5,6 +5,20 @@
 [RequireComponent(typeof(SphereCollider))]
 public class Tomato : MonoBehaviour
 {
+    [SerializeField][HideInInspector]
+    private MeshRenderer meshRenderer = null;
+    [SerializeField][HideInInspector]
+    private Rigidbody rigidBody = null;
+    [SerializeField][HideInInspector]
+    private SphereCollider sphereCollider = null;
+
+    private void OnValidate()
+    {
+        meshRenderer = GetComponent<MeshRenderer>();
+        rigidBody = GetComponent<Rigidbody>();
+        sphereCollider = GetComponent<SphereCollider>();
+    }
+
     private float growSpeed = 1.0f;
     private float lifeTime = 1.0f;
     private float timeLeft = 0.0f;
@@ -28,19 +42,6 @@ public class Tomato : MonoBehaviour
     [SerializeField]
     private Color poorColor = Color.cyan;
 
-    [SerializeField][HideInInspector]
-    private MeshRenderer meshRenderer = null;
-    [SerializeField][HideInInspector]
-    private Rigidbody rigidbody = null;
-    [SerializeField][HideInInspector]
-    private SphereCollider sphereCollider = null;
-
-    private void OnValidate()
-    {
-        meshRenderer = GetComponent<MeshRenderer>();
-        rigidbody = GetComponent<Rigidbody>();
-        sphereCollider = GetComponent<SphereCollider>();
-    }
 
 
     public void Setup( float _growSpeed, float _lifeTime)
@@ -61,6 +62,7 @@ public class Tomato : MonoBehaviour
         var currentColor = (Color)(isPoor ? Vector4.Lerp(doneColor, poorColor, t ) : Vector4.Lerp(rawColor, doneColor, t * t ) );
         meshRenderer.material.color = currentColor;
     }
+
     private void UpdateSize()
     {
         var t = isPoor ? (lifeTime + poorTime - timeLeft) / poorTime * lifeTime : Mathf.Min(timeLeft, lifeTime);
@@ -71,14 +73,14 @@ public class Tomato : MonoBehaviour
 
     private void Update()
     {
-        timeLeft += Time.fixedDeltaTime;
+        timeLeft += Time.deltaTime;
         if (timeLeft > lifeTime + poorTime)
             Kill();
 
         isPoor = timeLeft > lifeTime;
-        if( isPoor && rigidbody)
+        if( isPoor && rigidBody && sphereCollider)
         {
-            rigidbody.useGravity = true;
+            rigidBody.useGravity = true;
             sphereCollider.isTrigger = true;
         }
 
@@ -97,11 +99,19 @@ public class Tomato : MonoBehaviour
             return doneCost;
         return 0;
     }
+    private void NotifyScore( int scoreValue )
+    {
+        if (scoreValue < 1)
+            return;
+
+        GameManager.Instance.AddScore(scoreValue);
+        ScoreNotificator.Instance.NotifyScore(scoreValue, transform.position);
+    }
 
     private void OnMouseDown()
     {
         var score = CalcScore();
-        GameManager.Instance.AddScore(score);
+        NotifyScore(score);
         Kill();
     }
 
